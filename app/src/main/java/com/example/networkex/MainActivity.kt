@@ -2,7 +2,7 @@ package com.example.networkex
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.adapter = pokemonAdapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = GridLayoutManager(this, 2) // Set grid with 2 columns
 
         loadMorePokemon()
 
@@ -40,8 +40,12 @@ class MainActivity : AppCompatActivity() {
                     dy: Int,
                 ) {
                     super.onScrolled(recyclerView, dx, dy)
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    if (layoutManager.findLastCompletelyVisibleItemPosition() == pokemonAdapter.itemCount - 1) {
+                    val layoutManager = recyclerView.layoutManager as GridLayoutManager
+                    val totalItemCount = layoutManager.itemCount
+                    val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+
+                    // Load more when 4 items are left to be displayed
+                    if (lastVisibleItem >= totalItemCount - 4) {
                         loadMorePokemon()
                     }
                 }
