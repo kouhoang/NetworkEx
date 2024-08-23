@@ -1,26 +1,26 @@
-package com.example.networkex
+package com.example.networkex.view
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.networkex.R
+import com.example.networkex.data.network.RetrofitInstance
+import com.example.networkex.data.repository.PokemonRepository
+import com.example.networkex.ui.adapter.PokemonAdapter
+import com.example.networkex.ui.viewmodel.PokemonViewModel
+import com.example.networkex.ui.viewmodel.PokemonViewModelFactory
 
 class MainActivity : AppCompatActivity() {
-    private val pokemonAdapter by lazy { PokemonAdapter(mutableListOf()) }
-    private val pokeApiService by lazy {
-        Retrofit
-            .Builder()
-            .baseUrl("https://pokeapi.co/api/v2/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(PokeApiService::class.java)
+    private val pokemonViewModel: PokemonViewModel by viewModels {
+        PokemonViewModelFactory(
+            PokemonRepository(
+                RetrofitInstance.api,
+            ),
+        )
     }
+    private val pokemonAdapter = PokemonAdapter(mutableListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +30,9 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = pokemonAdapter
         recyclerView.layoutManager = GridLayoutManager(this, 2) // Set grid with 2 columns
 
-        loadMorePokemon()
+        pokemonViewModel.pokemons.observe(this) { pokemons ->
+            pokemonAdapter.updatePokemons(pokemons)
+        }
 
         recyclerView.addOnScrollListener(
             object : RecyclerView.OnScrollListener() {
@@ -46,23 +48,10 @@ class MainActivity : AppCompatActivity() {
 
                     // Load more when 4 items are left to be displayed
                     if (lastVisibleItem >= totalItemCount - 4) {
-                        loadMorePokemon()
+                        pokemonViewModel.loadMorePokemon()
                     }
                 }
             },
         )
-    }
-
-    private fun loadMorePokemon() {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val response = pokeApiService.getPokemonList(limit = 20, offset = pokemonAdapter.itemCount)
-                withContext(Dispatchers.Main) {
-                    pokemonAdapter.addPokemons(response.results)
-                }
-            } catch (e: Exception) {
-                // Handle error
-            }
-        }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.networkex
+package com.example.networkex.data.model
 
 data class Pokemon(
     val name: String,
