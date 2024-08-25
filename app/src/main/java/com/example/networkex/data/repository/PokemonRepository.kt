@@ -1,7 +1,7 @@
 package com.example.networkex.data.repository
 
 import com.example.networkex.data.local.PokemonDao
-import com.example.networkex.data.local.PokemonEntity
+import com.example.networkex.data.local.entities.PokemonEntity
 import com.example.networkex.data.model.Pokemon
 import com.example.networkex.data.model.PokemonResponse
 import com.example.networkex.data.network.PokeApiService
