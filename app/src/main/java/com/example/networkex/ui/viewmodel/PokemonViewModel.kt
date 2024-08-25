@@ -26,7 +26,27 @@ class PokemonViewModel
         private var isLoading = false
 
         init {
-            loadMorePokemon()
+            loadPokemons()
+        }
+
+        private fun loadPokemons() {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    try {
+                        val response = repository.getPokemons(limit, offset)
+                        offset += limit
+
+                        val currentList = _pokemons.value.orEmpty().toMutableList()
+                        val newPokemons = response.results.filterNot { it in currentList }
+                        currentList.addAll(newPokemons)
+                        _pokemons.postValue(currentList)
+                    } catch (e: Exception) {
+                        // Nếu có lỗi (có thể là không có mạng), thì tải từ cơ sở dữ liệu cục bộ
+                        val cachedPokemons = repository.getCachedPokemons()
+                        _pokemons.postValue(cachedPokemons)
+                    }
+                }
+            }
         }
 
         fun loadMorePokemon() {
@@ -34,21 +54,20 @@ class PokemonViewModel
 
             isLoading = true
             viewModelScope.launch {
-                try {
-                    val response =
-                        withContext(Dispatchers.IO) {
-                            repository.getPokemons(limit, offset)
-                        }
-                    offset += limit
+                withContext(Dispatchers.IO) {
+                    try {
+                        val response = repository.getPokemons(limit, offset)
+                        offset += limit
 
-                    val currentList = _pokemons.value.orEmpty().toMutableList()
-                    val newPokemons = response.results.filterNot { it in currentList }
-                    currentList.addAll(newPokemons)
-                    _pokemons.value = currentList
-                } catch (e: Exception) {
-                    // Handle error
-                } finally {
-                    isLoading = false
+                        val currentList = _pokemons.value.orEmpty().toMutableList()
+                        val newPokemons = response.results.filterNot { it in currentList }
+                        currentList.addAll(newPokemons)
+                        _pokemons.postValue(currentList)
+                    } catch (e: Exception) {
+                        // Handle error
+                    } finally {
+                        isLoading = false
+                    }
                 }
             }
         }

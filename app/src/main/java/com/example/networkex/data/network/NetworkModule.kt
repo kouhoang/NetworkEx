@@ -1,8 +1,13 @@
 package com.example.networkex.data.network
 
+import android.content.Context
+import androidx.room.Room
+import com.example.networkex.data.local.PokemonDao
+import com.example.networkex.data.local.PokemonDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,4 +28,20 @@ object NetworkModule {
     @Provides
     @Singleton
     fun providePokeApiService(retrofit: Retrofit): PokeApiService = retrofit.create(PokeApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun providePokemonDatabase(
+        @ApplicationContext context: Context,
+    ): PokemonDatabase =
+        Room
+            .databaseBuilder(
+                context,
+                PokemonDatabase::class.java,
+                "pokemon_database",
+            ).build()
+
+    @Provides
+    @Singleton
+    fun providePokemonDao(database: PokemonDatabase): PokemonDao = database.pokemonDao()
 }
