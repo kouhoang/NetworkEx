@@ -37,17 +37,6 @@ NetworkEx là một ứng dụng Android đơn giản hiển thị danh sách c�
 3. Cuộn xuống để tải thêm các Pokémon khác.
 4. Mỗi Pokémon sẽ hiển thị tên, số thứ tự, và hình ảnh.
 
-## Kiến trúc dự án
-
-- **MainActivity**: Hoạt động chính hiển thị RecyclerView và xử lý tải dữ liệu từ API.
-- **PokemonAdapter**: Bộ điều hợp cho RecyclerView, quản lý hiển thị danh sách Pokémon.
-- **PokemonViewModel**: Quản lý logic dữ liệu và trạng thái của ứng dụng.
-- **PokemonRepository**: Quản lý các tác vụ liên quan đến dữ liệu, sử dụng Retrofit để lấy dữ liệu từ API.
-- **PokeApiService**: Giao diện Retrofit định nghĩa các yêu cầu HTTP đến PokéAPI.
-- **Pokemon**: Lớp dữ liệu đại diện cho một Pokémon.
-- **PokemonResponse**: Lớp đại diện cho phản hồi từ API chứa danh sách Pokémon.
-- **NetworkModule**: Hilt module cung cấp các phụ thuộc cần thiết cho Retrofit và PokeApiService.
-
 ## Thư viện sử dụng
 
 - **Retrofit**: Thực hiện các yêu cầu HTTP.
