@@ -1,4 +1,4 @@
-package com.example.reactiveex
+package com.example.networkex
 
 import org.junit.Test
 
