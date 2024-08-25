@@ -6,45 +6,50 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.networkex.data.model.Pokemon
 import com.example.networkex.data.repository.PokemonRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class PokemonViewModel(
-    private val repository: PokemonRepository,
-) : ViewModel() {
-    private val _pokemons = MutableLiveData<List<Pokemon>>()
-    val pokemons: LiveData<List<Pokemon>> get() = _pokemons
+@HiltViewModel
+class PokemonViewModel
+    @Inject
+    constructor(
+        private val repository: PokemonRepository,
+    ) : ViewModel() {
+        private val _pokemons = MutableLiveData<List<Pokemon>>()
+        val pokemons: LiveData<List<Pokemon>> get() = _pokemons
 
-    private var offset = 0
-    private val limit = 20
-    private var isLoading = false
+        private var offset = 0
+        private val limit = 20
+        private var isLoading = false
 
-    init {
-        loadMorePokemon()
-    }
+        init {
+            loadMorePokemon()
+        }
 
-    fun loadMorePokemon() {
-        if (isLoading) return
+        fun loadMorePokemon() {
+            if (isLoading) return
 
-        isLoading = true
-        viewModelScope.launch {
-            try {
-                val response =
-                    withContext(Dispatchers.IO) {
-                        repository.getPokemons(limit, offset)
-                    }
-                offset += limit
+            isLoading = true
+            viewModelScope.launch {
+                try {
+                    val response =
+                        withContext(Dispatchers.IO) {
+                            repository.getPokemons(limit, offset)
+                        }
+                    offset += limit
 
-                val currentList = _pokemons.value.orEmpty().toMutableList()
-                val newPokemons = response.results.filterNot { it in currentList }
-                currentList.addAll(newPokemons)
-                _pokemons.value = currentList
-            } catch (e: Exception) {
-                // Handle error
-            } finally {
-                isLoading = false
+                    val currentList = _pokemons.value.orEmpty().toMutableList()
+                    val newPokemons = response.results.filterNot { it in currentList }
+                    currentList.addAll(newPokemons)
+                    _pokemons.value = currentList
+                } catch (e: Exception) {
+                    // Handle error
+                } finally {
+                    isLoading = false
+                }
             }
         }
     }
-}
