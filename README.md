@@ -55,6 +55,3 @@ NetworkEx là một ứng dụng Android đơn giản hiển thị danh sách c�
 - **Hilt**: Tiêm phụ thuộc cho các lớp trong ứng dụng.
 - **Kotlin Coroutines**: Xử lý tác vụ không đồng bộ.
 
-## Giấy phép
-
-Dự án này được cấp phép theo giấy phép MIT. Xem [LICENSE](LICENSE) để biết thêm chi tiết.
