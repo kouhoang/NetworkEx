@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "NetworkEx"
+rootProject.name = "ReactiveEx"
 include(":app")
+ 

@@ -2,14 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="bg_color_1">#FFCDD2</color> <!-- Light Red -->
-    <color name="bg_color_2">#F8BBD0</color> <!-- Light Pink -->
-    <color name="bg_color_3">#E1BEE7</color> <!-- Light Purple -->
-    <color name="bg_color_4">#D1C4E9</color> <!-- Light Deep Purple -->
-    <color name="bg_color_5">#C5CAE9</color> <!-- Light Indigo -->
-    <color name="bg_color_6">#BBDEFB</color> <!-- Light Blue -->
-    <color name="bg_color_7">#B3E5FC</color> <!-- Light Light Blue -->
-    <color name="bg_color_8">#B2EBF2</color> <!-- Light Cyan -->
-    <color name="bg_color_9">#B2DFDB</color> <!-- Light Teal -->
-    <color name="bg_color_10">#C8E6C9</color> <!-- Light Green -->
+    <color name="darkGray">#2C2F33</color>
+    <color name="light_blue">#a9dce3</color>
+    <color name="red">#F00</color>
 </resources>

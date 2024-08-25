@@ -1,16 +1,14 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    kotlin("kapt")
-    alias(libs.plugins.google.dagger.hilt)
 }
 
 android {
-    namespace = "com.example.networkex"
+    namespace = "com.example.reactiveex"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.networkex"
+        applicationId = "com.example.reactiveex"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -35,9 +33,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
@@ -51,23 +46,14 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.picasso:picasso:2.71828")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
-    implementation("androidx.paging:paging-runtime-ktx:3.1.0")
-    implementation("androidx.cardview:cardview:1.0.0")
-    implementation("com.github.bumptech.glide:glide:4.15.1")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
-    implementation("com.google.code.gson:gson:2.10")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
-    implementation(libs.google.dagger.hilt)
-    kapt(libs.google.dagger.hilt.compiler)
+    // SQLite
+    implementation("androidx.sqlite:sqlite:2.3.1")
+    implementation("androidx.room:room-runtime:2.5.2")
+    annotationProcessor("androidx.room:room-compiler:2.5.2")
 
-    implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
-}
-kapt {
-    correctErrorTypes = true
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 }
