@@ -36,7 +36,6 @@ class PokemonViewModel(
                     }
                 offset += limit
 
-                // Get current list and add new items
                 val currentList = _pokemons.value.orEmpty().toMutableList()
                 val newPokemons = response.results.filterNot { it in currentList }
                 currentList.addAll(newPokemons)

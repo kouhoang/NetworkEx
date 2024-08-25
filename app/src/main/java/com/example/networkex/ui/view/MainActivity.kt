@@ -46,8 +46,8 @@ class MainActivity : AppCompatActivity() {
                     val totalItemCount = layoutManager.itemCount
                     val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
 
-                    // Load more when 4 items are left to be displayed
-                    if (lastVisibleItem >= totalItemCount - 4) {
+                    // Trigger load when there are more items left
+                    if (lastVisibleItem >= totalItemCount - 20) {
                         pokemonViewModel.loadMorePokemon()
                     }
                 }
